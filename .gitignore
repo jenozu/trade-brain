@@ -1,0 +1,19 @@
+# Obsidian workspace state (machine-specific)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+
+# Secrets and local environment files
+.env
+.env.*
+*.pem
+*.key
+
+# Local caches
+.cache/
+__pycache__/
