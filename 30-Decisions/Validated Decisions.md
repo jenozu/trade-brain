@@ -2,7 +2,7 @@
 type: decision
 status: active
 created: 2026-09-02
-updated: 2026-09-02
+updated: 2026-09-03
 confidence: validated
 tags:
   - decisions
@@ -65,18 +65,23 @@ Records durable decisions that are already reflected in the current project conf
 
 ## Session decisions
 
-- Trading/session timezone is America/New_York.
+- Trading/session timezone is America/New_York; session windows are fixed ET and half-open.
 - CME equity-index futures session date rolls at 18:00 ET.
 - Current strategy entry window is 09:30–10:30 ET.
-- Premarket is currently 04:00–09:30 ET.
-- Current London window remains **provisional** and therefore is not a validated production definition.
+- Premarket is 04:00–09:30 ET and intentionally overlaps the 18:00–09:30 overnight window.
+- The strategy London liquidity window is 02:00–05:00 ET; LOH/LOL develop causally and finalize at 05:00.
+- The Asia window is 20:00–00:00 ET; ASH/ASL develop causally, finalize at 00:00, and remain secondary/internal liquidity references rather than replacements for PMH/PML.
+- The futures Daily bar is prior-calendar-day 18:00 through trading-date 17:00 ET; only completed Daily bars may feed higher-timeframe analysis.
+- The futures week runs Sunday 18:00 through Friday 17:00 ET.
+- Previous close is the prior RTH close; prior-day half-back is `(prior RTH high + prior RTH low) / 2`.
+- PDH/PDL become authoritative at the next 18:00 ET Globex open.
+- Under completed-1m analysis, the 09:30 cash-open price becomes available at 09:31.
 
 ## Decisions that remain open
 
 Do not promote these to validated rules without explicit evidence and approval:
 
 - exact priority of PMH/PML versus internal breakout structure when the premarket range is wide
-- final production London-session definition
 - exact 1H/30m/15m versus 4H/Daily bias hierarchy
 - which breakout confirmations are mandatory versus scoring-only
 - final support/resistance confluence model
@@ -94,5 +99,8 @@ Do not promote these to validated rules without explicit evidence and approval:
 - `jenozu/trade-alerts/phases.md`
 - `jenozu/trade-alerts/config/strategy.yaml`
 - `jenozu/trade-alerts/config/sessions.yaml`
+- `jenozu/trade-alerts/src/data_clock.py`
+- `jenozu/trade-alerts/src/resample.py`
+- `jenozu/trade-alerts/src/sessions.py`
 - `jenozu/trade-alerts/src/structure.py`
 - `jenozu/trade-alerts/src/backtest.py`
